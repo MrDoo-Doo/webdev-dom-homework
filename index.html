@@ -23,7 +23,7 @@
 
 <script>
   "use strict";
-  //---------------Сузествующие записи
+  //---------------Существующие записи
   let comments = [
     {
       name: 'Глеб Фокин',
@@ -45,9 +45,9 @@
   function renderComments() {
     const arrayComments = document.querySelector('.comments');
     arrayComments.innerHTML = comments.map((comment, index) => {
-      return `<li class="comment">
+      return `<li data-index="${index}" class="comment">
       <div class="comment-header">
-        <div>${comment.name}</div>
+        <div class="comment-header_name">${comment.name}</div>
         <div>${comment.time}</div>
       </div>
       <div class="comment-body">
@@ -64,6 +64,7 @@
     </li>`;
     }).join('');
     addLike();
+    reply();
   };
 
   //---------------Функция добавления комментария
@@ -85,11 +86,12 @@
       minute = String(currentDate.getMinutes()).padStart(2, '0');
 
       nowDate = `${day}.${month}.${year} ${hour}:${minute}`;
-
-      let newComment = { name: userName.value, text: userComment.value, time: nowDate, like: false, likeCount: 0 };
+      let userNameSafe = userName.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+      let userCommentSafe = userComment.value.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+      let newComment = { name: userNameSafe, text: userCommentSafe, time: nowDate, like: false, likeCount: 0 };
       comments.push(newComment);
       userName.value = "";
-      userComment.value = ""
+      userComment.value = "";
       renderComments();
     });
   }
@@ -98,22 +100,40 @@
   function addLike() {
     const arrayLike = document.querySelectorAll('.like-button');
     for (const like of arrayLike) {
-      like.addEventListener('click', () => {
-        if (comments[like.dataset.index].like === false) {
-          comments[like.dataset.index].like = true;
-          comments[like.dataset.index].likeCount++;
+      like.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const currentComment = comments[like.dataset.index];
+        if (currentComment.like === false) {
+          currentComment.like = true;
+          currentComment.likeCount++;
         }
         else {
-          comments[like.dataset.index].like = false;
-          comments[like.dataset.index].likeCount--;
+          currentComment.like = false;
+          currentComment.likeCount--;
         }
         renderComments();
       })
     }
   }
 
+  //---------------Функция ответа на комментарий
+  function reply() {
+    const arrayInitialComment = document.querySelectorAll('.comment');
+    const userName = document.querySelector('.add-form-name');
+    const userComment = document.querySelector('.add-form-text');
+    const button = document.querySelector('.add-form-button');
+    for (const initialComment of arrayInitialComment) {
+      initialComment.addEventListener('click', () => {
+        const selectedComment = comments[initialComment.dataset.index];
+        userComment.value = `«${selectedComment.text}», - ${selectedComment.name}, `;
+        userComment.focus();
+      });
+    }
+  }
+
   renderComments();
   addComment();
+  reply();
 </script>
 
 </html>
