@@ -40,13 +40,15 @@ export function addComment() {
 export function addLike() {
     const arrayLike = document.querySelectorAll('.like-button');
     for (const like of arrayLike) {
-        like.addEventListener('click', () => {
-            if (comments[like.dataset.index].like === false) {
-                comments[like.dataset.index].like = true;
-                comments[like.dataset.index].likeCount++;
+        like.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const currentComment = comments[like.dataset.index];
+            if (currentComment.like === false) {
+                currentComment.like = true;
+                currentComment.likeCount++;
             } else {
-                comments[like.dataset.index].like = false;
-                comments[like.dataset.index].likeCount--;
+                currentComment.like = false;
+                currentComment.likeCount--;
             }
             renderComments();
         });
