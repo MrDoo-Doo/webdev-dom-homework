@@ -54,6 +54,7 @@ export function addLike() {
         });
     }
 }
+// вфывыф
 
 //---------------Функция ответа на комментарий
 export function reply() {
