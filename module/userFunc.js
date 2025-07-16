@@ -1,0 +1,68 @@
+import { comments } from './data.js';
+import { renderComments } from './load.js';
+import { safeFunc } from './safe.js';
+
+//---------------Функция добавления комментария
+export function addComment() {
+    const userName = document.querySelector('.add-form-name');
+    const userComment = document.querySelector('.add-form-text');
+    const button = document.querySelector('.add-form-button');
+    button.addEventListener('click', () => {
+        let day, month, year, hour, minute;
+        let currentDate;
+        let nowDate;
+
+        currentDate = new Date();
+
+        year = String(currentDate.getFullYear()).slice(-2);
+        month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        day = String(currentDate.getDate()).padStart(2, '0');
+        hour = String(currentDate.getHours()).padStart(2, '0');
+        minute = String(currentDate.getMinutes()).padStart(2, '0');
+
+        nowDate = `${day}.${month}.${year} ${hour}:${minute}`;
+
+        let newComment = {
+            name: safeFunc(userName.value),
+            text: safeFunc(userComment.value),
+            time: nowDate,
+            like: false,
+            likeCount: 0,
+        };
+        comments.push(newComment);
+        userName.value = '';
+        userComment.value = '';
+        renderComments();
+    });
+}
+
+//---------------Функция изменения лайка
+export function addLike() {
+    const arrayLike = document.querySelectorAll('.like-button');
+    for (const like of arrayLike) {
+        like.addEventListener('click', () => {
+            if (comments[like.dataset.index].like === false) {
+                comments[like.dataset.index].like = true;
+                comments[like.dataset.index].likeCount++;
+            } else {
+                comments[like.dataset.index].like = false;
+                comments[like.dataset.index].likeCount--;
+            }
+            renderComments();
+        });
+    }
+}
+
+//---------------Функция ответа на комментарий
+export function reply() {
+    const arrayInitialComment = document.querySelectorAll('.comment');
+    const userComment = document.querySelector('.add-form-text');
+    for (const initialComment of arrayInitialComment) {
+        initialComment.addEventListener('click', () => {
+            const selectedComment = comments[initialComment.dataset.index];
+            console.log(initialComment.dataset.index);
+            userComment.value = `«${selectedComment.text}», - ${selectedComment.name}, `;
+            userComment.focus();
+        });
+    }
+}
