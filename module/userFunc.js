@@ -1,4 +1,5 @@
-import { comments } from './data.js';
+import { postComments } from './api.js';
+import { comments, updateComments } from './data.js';
 import { renderComments } from './load.js';
 import { safeFunc } from './safe.js';
 
@@ -22,17 +23,24 @@ export function addComment() {
 
         nowDate = `${day}.${month}.${year} ${hour}:${minute}`;
 
-        let newComment = {
-            name: safeFunc(userName.value),
-            text: safeFunc(userComment.value),
-            time: nowDate,
-            like: false,
-            likeCount: 0,
-        };
-        comments.push(newComment);
-        userName.value = '';
+        // let newComment = {
+        //     name: safeFunc(userName.value),
+        //     text: safeFunc(userComment.value),
+        //     time: nowDate,
+        //     like: false,
+        //     likeCount: 0,
+        // };
+
+        postComments(safeFunc(userComment.value), safeFunc(userName.value)).then(
+            (data) => {
+                updateComments(data)
+                renderComments();
+userName.value = '';
         userComment.value = '';
-        renderComments();
+            }
+        )
+        // comments.push(newComment);
+    
     });
 }
 
