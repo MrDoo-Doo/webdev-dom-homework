@@ -1,3 +1,5 @@
+import { dateStandart } from './safe.js';
+
 const host = 'https://wedev-api.sky.pro/api/v1/alexye-efremov';
 export const fetchComments = () => {
     return fetch(host + '/comments')
@@ -8,9 +10,9 @@ export const fetchComments = () => {
         const masComments = responseData.comments.map(comment => {
             return {
                 name: comment.author.name,
-                time: comment.date,
+                time: dateStandart(comment.date),
                 text: comment.text,
-                likeCount: comment.like,
+                likeCount: comment.likes,
                 like: false
             }
         })

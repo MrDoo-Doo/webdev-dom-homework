@@ -32,7 +32,7 @@ export function renderComments() {
     reply();
 }
 
-fetchComments().then(date => {
+fetchComments().then((data) => {
   updateComments(data);
   renderComments();
 });
