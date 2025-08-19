@@ -1,4 +1,5 @@
-import { comments } from './data.js';
+import { postComments } from './api.js';
+import { comments, updateComments } from './data.js';
 import { renderComments } from './load.js';
 import { safeFunc } from './safe.js';
 
@@ -22,17 +23,24 @@ export function addComment() {
 
         nowDate = `${day}.${month}.${year} ${hour}:${minute}`;
 
-        let newComment = {
-            name: safeFunc(userName.value),
-            text: safeFunc(userComment.value),
-            time: nowDate,
-            like: false,
-            likeCount: 0,
-        };
-        comments.push(newComment);
-        userName.value = '';
+        // let newComment = {
+        //     name: safeFunc(userName.value),
+        //     text: safeFunc(userComment.value),
+        //     time: nowDate,
+        //     like: false,
+        //     likeCount: 0,
+        // };
+
+        postComments(safeFunc(userComment.value), safeFunc(userName.value)).then(
+            (data) => {
+                updateComments(data)
+                renderComments();
+userName.value = '';
         userComment.value = '';
-        renderComments();
+            }
+        )
+        // comments.push(newComment);
+    
     });
 }
 
@@ -40,18 +48,21 @@ export function addComment() {
 export function addLike() {
     const arrayLike = document.querySelectorAll('.like-button');
     for (const like of arrayLike) {
-        like.addEventListener('click', () => {
-            if (comments[like.dataset.index].like === false) {
-                comments[like.dataset.index].like = true;
-                comments[like.dataset.index].likeCount++;
+        like.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const currentComment = comments[like.dataset.index];
+            if (currentComment.like === false) {
+                currentComment.like = true;
+                currentComment.likeCount++;
             } else {
-                comments[like.dataset.index].like = false;
-                comments[like.dataset.index].likeCount--;
+                currentComment.like = false;
+                currentComment.likeCount--;
             }
             renderComments();
         });
     }
 }
+// вфывыф
 
 //---------------Функция ответа на комментарий
 export function reply() {

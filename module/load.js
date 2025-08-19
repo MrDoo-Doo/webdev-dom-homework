@@ -1,4 +1,5 @@
-import { comments } from './data.js';
+import { fetchComments } from './api.js';
+import { comments, updateComments } from './data.js';
 import { addLike, addComment, reply } from './userFunc.js';
 
 //---------------Функция обновления комментариев
@@ -31,5 +32,9 @@ export function renderComments() {
     reply();
 }
 
-renderComments();
+fetchComments().then((data) => {
+  updateComments(data);
+  renderComments();
+});
+// renderComments();
 addComment();
