@@ -31,16 +31,21 @@ export function addComment() {
         //     likeCount: 0,
         // };
 
-        postComments(safeFunc(userComment.value), safeFunc(userName.value)).then(
-            (data) => {
-                updateComments(data)
-                renderComments();
-userName.value = '';
-        userComment.value = '';
-            }
-        )
+        document.querySelector('.loading-com').style.display = 'block';
+        document.querySelector('.add-form').style.display = 'none';
+
+        postComments(
+            safeFunc(userComment.value),
+            safeFunc(userName.value),
+        ).then((data) => {
+            document.querySelector('.loading-com').style.display = 'none';
+            document.querySelector('.add-form').style.display = 'flex';
+            updateComments(data);
+            renderComments();
+            userName.value = '';
+            userComment.value = '';
+        });
         // comments.push(newComment);
-    
     });
 }
 

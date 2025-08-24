@@ -15,7 +15,6 @@ export let comments = [
     //     likeCount: 70,
     // },
 ];
-
 export const updateComments = (newComents) => {
     comments = newComents;
-}
+};

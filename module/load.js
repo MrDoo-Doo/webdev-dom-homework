@@ -32,9 +32,11 @@ export function renderComments() {
     reply();
 }
 
+document.querySelector('.comments').innerHTML = 'Загрузка комментариев...';
+
 fetchComments().then((data) => {
-  updateComments(data);
-  renderComments();
+    updateComments(data);
+    renderComments();
 });
 // renderComments();
 addComment();
