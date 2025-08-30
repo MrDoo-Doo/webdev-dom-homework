@@ -14,6 +14,7 @@ export const fetchComments = () => {
                     text: comment.text,
                     likeCount: comment.likes,
                     like: false,
+                    likeLoad: false,
                 };
             });
             return masComments;

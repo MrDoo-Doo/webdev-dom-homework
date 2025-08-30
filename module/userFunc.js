@@ -9,19 +9,10 @@ export function addComment() {
     const userComment = document.querySelector('.add-form-text');
     const button = document.querySelector('.add-form-button');
     button.addEventListener('click', () => {
-        let day, month, year, hour, minute;
-        let currentDate;
-        let nowDate;
+        // let currentDate;
 
-        currentDate = new Date();
-
-        year = String(currentDate.getFullYear()).slice(-2);
-        month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        day = String(currentDate.getDate()).padStart(2, '0');
-        hour = String(currentDate.getHours()).padStart(2, '0');
-        minute = String(currentDate.getMinutes()).padStart(2, '0');
-
-        nowDate = `${day}.${month}.${year} ${hour}:${minute}`;
+        // currentDate = new Date();
+        // currentDate = dateStandart(currentDate);
 
         // let newComment = {
         //     name: safeFunc(userName.value),
@@ -33,13 +24,15 @@ export function addComment() {
 
         document.querySelector('.loading-com').style.display = 'block';
         document.querySelector('.add-form').style.display = 'none';
-
+        // console.log(currentDate);
         postComments(
             safeFunc(userComment.value),
             safeFunc(userName.value),
+            // currentDate,
         ).then((data) => {
             document.querySelector('.loading-com').style.display = 'none';
             document.querySelector('.add-form').style.display = 'flex';
+            console.log(data);
             updateComments(data);
             renderComments();
             userName.value = '';
@@ -56,17 +49,34 @@ export function addLike() {
         like.addEventListener('click', (e) => {
             e.stopPropagation();
             const currentComment = comments[like.dataset.index];
-            if (currentComment.like === false) {
-                currentComment.like = true;
-                currentComment.likeCount++;
-            } else {
-                currentComment.like = false;
-                currentComment.likeCount--;
-            }
+            currentComment.likeLoad = true;
+            delay(2000).then(() => {
+                if (currentComment.like === false) {
+                    currentComment.like = true;
+                    currentComment.likeCount++;
+                } else {
+                    currentComment.like = false;
+                    currentComment.likeCount--;
+                }
+                currentComment.likeLoad = false;
+                renderComments();
+            });
             renderComments();
         });
     }
 }
+
+export function delay(interval = 300) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, interval);
+    });
+}
+// comment.likeCount = comment.like ? comment.likeCount - 1 : comment.likeCount + 1;
+// comment.like = !comment.like;
+// comment.isLikeLoading = false;
+// renderComments();
 // вфывыф
 
 //---------------Функция ответа на комментарий

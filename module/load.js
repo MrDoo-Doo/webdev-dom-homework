@@ -1,6 +1,6 @@
 import { fetchComments } from './api.js';
 import { comments, updateComments } from './data.js';
-import { addLike, addComment, reply } from './userFunc.js';
+import { addLike, addComment, reply, delay } from './userFunc.js';
 
 //---------------Функция обновления комментариев
 export function renderComments() {
@@ -22,13 +22,16 @@ export function renderComments() {
           <span class="likes-counter">${comment.likeCount}</span>
           <button data-index="${index}" class="like-button ${
               comment.like ? '-active-like' : ''
-          }"></button>
+          } ${comment.likeLoad ? '-loading-like' : ''}"></button>
         </div>
       </div>
     </li>`;
         })
         .join('');
     addLike();
+    // delay(2000).then(() => {
+    //     addLike();
+    // });
     reply();
 }
 
