@@ -64,20 +64,20 @@ export function renderComments() {
     }
 }
 
-// document.querySelector('.comments').innerHTML = 'Загрузка комментариев...';
-// export function checkRenderComments(firstLoad) {
-//     if (firstLoad) {
-//         document.querySelector('.container').innerHTML =
-//             `<p>Загрузка комментариев...</p>`;
-//     }
-//     fetchComments().then((data) => {
-//         updateComments(data);
-//         renderComments();
-//     });
-// }
-// checkRenderComments(true);
+document.querySelector('.container').innerHTML = 'Загрузка комментариев...';
+export function checkRenderComments(firstLoad) {
+    if (firstLoad) {
+        document.querySelector('.container').innerHTML =
+            `<p>Загрузка комментариев...</p>`;
+    }
+    fetchComments().then((data) => {
+        updateComments(data);
+        renderComments();
+    });
+}
+checkRenderComments(true);
 // renderComments();
-fetchComments().then((data) => {
-    updateComments(data);
-    renderComments();
-});
+// fetchComments().then((data) => {
+//     updateComments(data);
+//     renderComments();
+// });
