@@ -27,8 +27,18 @@ export const postComments = (text, name) => {
         body: JSON.stringify({
             text,
             name,
+            forceError: true,
         }),
-    }).then(() => {
-        return fetchComments();
-    });
+    })
+        .then((response) => {
+            if (response.status === 500) {
+                throw new Error('Ошибка сервера');
+            }
+            if (response.status === 400) {
+                throw new Error('Ошибка ввода');
+            }
+        })
+        .then(() => {
+            return fetchComments();
+        });
 };

@@ -8,7 +8,9 @@ export function addComment() {
     const userName = document.querySelector('.add-form-name');
     const userComment = document.querySelector('.add-form-text');
     const button = document.querySelector('.add-form-button');
+    let key = 0;
     button.addEventListener('click', () => {
+        console.log(key);
         // let currentDate;
 
         // currentDate = new Date();
@@ -25,22 +27,77 @@ export function addComment() {
         document.querySelector('.loading-com').style.display = 'block';
         document.querySelector('.add-form').style.display = 'none';
         // console.log(currentDate);
-        postComments(
-            safeFunc(userComment.value),
-            safeFunc(userName.value),
-            // currentDate,
-        ).then((data) => {
-            document.querySelector('.loading-com').style.display = 'none';
-            document.querySelector('.add-form').style.display = 'flex';
-            console.log(data);
-            updateComments(data);
-            renderComments();
-            userName.value = '';
-            userComment.value = '';
-        });
+        // let key = 0;
+        // adBtn(safeFunc(userComment.value), safeFunc(userName.value), key);
+        postComments(safeFunc(userComment.value), safeFunc(userName.value))
+            .then((data) => {
+                document.querySelector('.loading-com').style.display = 'none';
+                document.querySelector('.add-form').style.display = 'flex';
+                // console.log(data);
+                updateComments(data);
+                renderComments();
+                userName.value = '';
+                userComment.value = '';
+                key = 0;
+            })
+            .catch((error) => {
+                document.querySelector('.loading-com').style.display = 'none';
+                document.querySelector('.add-form').style.display = 'flex';
+
+                if (error.message === 'Ошибка сервера') {
+                    // if (key < 3) {
+                    //     key++;
+                    //     debugger;
+                    //     button.click();
+                    // }
+                    // if (key == 3) {
+                    //     key = 0;
+                    // }
+                    alert('Что-то не то с сервером');
+                }
+                if (error.message === 'Ошибка ввода') {
+                    alert('Текст имени или комментария слишком короткий');
+                }
+                if (error.message === 'Failed to fetch') {
+                    alert('Проверьте интернет-соединение');
+                }
+            });
         // comments.push(newComment);
     });
 }
+
+// function adBtn(userComment, userName, key) {
+//     postComments(userComment, userName)
+//         .then((data) => {
+//             document.querySelector('.loading-com').style.display = 'none';
+//             document.querySelector('.add-form').style.display = 'flex';
+//             console.log(data);
+//             updateComments(data);
+//             renderComments();
+//             userName.value = '';
+//             userComment.value = '';
+//         })
+//         .catch((error) => {
+//             document.querySelector('.loading-com').style.display = 'none';
+//             document.querySelector('.add-form').style.display = 'flex';
+
+//             if (error.message === 'Ошибка сервера') {
+//                 if (key < 3) {
+//                     key++;
+//                     adBtn(userComment, userName, key);
+//                 }
+//                 if (key == 3) {
+//                     alert('Что-то не то с сервером');
+//                 }
+//             }
+//             if (error.message === 'Ошибка ввода') {
+//                 alert('Текст имени или комментария слишком короткий');
+//             }
+//             if (error.message === 'Failed to fetch') {
+//                 alert('Проверьте интернет-соединение');
+//             }
+//         });
+// }
 
 //---------------Функция изменения лайка
 export function addLike() {
