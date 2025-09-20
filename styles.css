@@ -104,9 +104,30 @@ body {
   border: none;
 }
 
-.add-form-name {
+.add-form-name-com {
   width: 300px;
+}
+
+.add-form-name {
+  margin-bottom: 20px;
+  /* width: 300px; */
   padding: 11px 22px;
+}
+
+.link-login {
+  text-decoration: underline
+}
+
+.add-form-registry {
+  border: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.entry,
+.registry {
+  margin-top: 20px;
+  align-self: center;
 }
 
 .add-form-text {
@@ -121,6 +142,16 @@ body {
 }
 
 .add-form-button {
+  margin-top: 24px;
+  font-size: 24px;
+  padding: 10px 20px;
+  background-color: #bcec30;
+  border: none;
+  border-radius: 18px;
+  cursor: pointer;
+}
+
+.add-form-button-main {
   margin-top: 24px;
   font-size: 24px;
   padding: 10px 20px;
